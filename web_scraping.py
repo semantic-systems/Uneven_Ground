@@ -4,6 +4,7 @@ import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Tuple, List
+import csv
 
 from tqdm import tqdm
 import requests
@@ -96,22 +97,26 @@ if __name__ == "__main__":
 
     # --- Parallel scrape and write immediately ---
     counter = 0
-    with ThreadPoolExecutor(max_workers=16) as executor:
-        futures = [executor.submit(scrape_job, url) for url in jobs]
-        print("Submitted jobs")
-        for future in tqdm(as_completed(futures), total=len(futures), desc="Scraping + Writing"):
-            url, url_status, url_validity, texts = future.result()
+    with open("data/triples_values_urls_verified.csv", 'wt') as out_file:
+        writer = csv.DictWriter(out_file)
+        with ThreadPoolExecutor(max_workers=16) as executor:
+            futures = [executor.submit(scrape_job, url) for url in jobs]
+            print("Submitted jobs")
+            for future in tqdm(as_completed(futures), total=len(futures), desc="Scraping + Writing"):
+                url, url_status, url_validity, texts = future.result()
 
-            for index, refdoc in url_to_ref[url]:
-                # Update DataFrame
-                df.at[index, 'url_status'] = url_status
-                df.at[index, 'is_url_valid'] = url_validity
-                if texts and not os.path.exists(f"{path}/wiki_ref/{refdoc}.txt"):
-                    output_path = f"{path}/wiki_ref/{refdoc}.txt"
-                    with open(output_path, 'w', encoding='utf-8') as f:
-                        f.write("\n".join(texts))
+                for index, refdoc in url_to_ref[url]:
+                    # Update DataFrame
+                    df.at[index, 'url_status'] = url_status
+                    df.at[index, 'is_url_valid'] = url_validity
+                    row = df.iloc[index].to_dict()
+                    writer.writerow(row)
+                    if texts and not os.path.exists(f"{path}/wiki_ref/{refdoc}.txt"):
+                        output_path = f"{path}/wiki_ref/{refdoc}.txt"
+                        with open(output_path, 'w', encoding='utf-8') as f:
+                            f.write("\n".join(texts))
 
 
 
-    df.to_csv(file, sep='\t')
+    # df.to_csv(file, sep='\t')
     print("Written " + str(counter))
