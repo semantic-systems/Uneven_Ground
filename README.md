@@ -40,7 +40,7 @@ python sample_triples.py --use_values True --urls True
 
 
 ---
-### URL validity
+### ✅ URL validity
 
 URLs provided as reference in Wkidata are checked for validity in `web_scraping.py` and `data/triples_values_urls_verified.csv` generated. The file contains human-readable values using Wikidata labels, URL as refernce and URL web scarping status (e.g., `Valid`, `Redirected`, `Not found`).
 
