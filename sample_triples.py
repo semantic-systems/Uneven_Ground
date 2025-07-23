@@ -38,6 +38,32 @@ def get_value_from_wikidata_id(wikidata_id, qid_to_label_map={}):
             return return_dict, qid_to_label_map
         else:
             return qid_to_label_map[wikidata_id], qid_to_label_map
+        
+def get_predictae_value_from_wikidata_id(wikidata_id, pid_to_label_map={}):
+        sparql = SPARQLWrapper("https://query.wikidata.org/sparql", agent="bench-gap")
+        if wikidata_id not in pid_to_label_map.keys():
+            # Only call API if label has not been retrieved before
+            sparql.setQuery(f""" 
+                            SELECT  ?label
+                            WHERE
+            {{
+                            wd:{wikidata_id} rdfs:label ?label . FILTER (lang(?label) = 'en') 
+
+            }} LIMIT 1
+            """)
+            sparql.setReturnFormat(JSON)
+            query_result = sparql.query().convert()
+            try:
+                value = query_result["results"]["bindings"][0]["label"]["value"]
+                language = query_result["results"]["bindings"][0]["label"]["xml:lang"]
+                return_dict = {"text": value, "language": language}
+            except:
+                print(wikidata_id, query_result)
+                return None, pid_to_label_map
+            pid_to_label_map[wikidata_id] = return_dict
+            return return_dict, pid_to_label_map
+        else:
+            return pid_to_label_map[wikidata_id], pid_to_label_map
 
 def parse_triples_from_country_data(country_data, args, out_dir="data"):
     counter = 0
