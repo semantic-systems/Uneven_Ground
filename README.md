@@ -1,6 +1,10 @@
 # Uneven Ground: Analyzing Representational and Referencing Biases in Wikidata by Country Income Level
 
-## 📁 Project Structure and Data Description
+## Abstract
+Although Wikidata has been playing a significant role in semantic web and AI technologies, it is not exempt from limitations regarding its inherent biases. Our work expands upon existing critiques and evaluates differences in centrality, characterization, and evidence-groundedness between countries considered high-, upper-middle-, lower-middle-, and low-income. Our findings indicate that higher-income countries and individuals with respective citizenship are generally more centrally represented in Wikidata. Furthermore, the types of relations used differ, and references are more commonly used for statements for higher-income countries.
+Additionally, there are prominent differences in the types of references utilized  across countries with different income levels. Our findings illuminate a previously underexplored facet of bias in Wikidata, adding to concerns regarding its current fitness as a backbone to semantic web and AI technologies meant to serve users across continents and countries. We hope to contribute to a better understanding of Wikidata's limitations to foster awareness and improved representational fairness in the long run.
+
+## Project Structure and Data Description
 
 This project includes extracted Wikidata data, graph analysis, and fact-checking results. Below is an overview of the key directories and files:
 
