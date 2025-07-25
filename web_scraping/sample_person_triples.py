@@ -99,9 +99,9 @@ def parse_triples_from_person_data(person_data, out):
 
 if __name__ == '__main__':
     wiki_lines = []
-    with gzip.open(os.path.join("data/person_statements/person_statements_part1.jsonl.gz")) as f:
+    with gzip.open(os.path.join("../data/person_statements/person_statements_part1.jsonl.gz")) as f:
             for line in f:
                     wiki_lines.append(json.loads(line))
             # wikidata_data = json.loads(f.read())
 
-    parse_triples_from_person_data(wiki_lines, 'data/triples_values_urls.tsv')
+    parse_triples_from_person_data(wiki_lines, '../data/triples_values_urls.tsv')

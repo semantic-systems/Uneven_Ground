@@ -143,6 +143,6 @@ if __name__ == "__main__":
                         help="Scrape evidence URLS.")
     args = parser.parse_args()
 
-    with gzip.open(os.path.join("data", "country_data.json.gz")) as f:
+    with gzip.open(os.path.join("../data", "country_data.json.gz")) as f:
         country_data = json.loads(f.read())
     parse_triples_from_country_data(country_data, args)

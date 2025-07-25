@@ -59,7 +59,7 @@ def scrape_url(url) -> Tuple[str, int, List[str]]:
 if __name__ == "__main__":
     print("[INFO] Start web scraping")
 
-    path = "data/"
+    path = "../data/"
     file = 'triples_values_urls.csv'
 
     df = pd.read_csv(f"{path}/{file}")
