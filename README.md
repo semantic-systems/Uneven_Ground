@@ -6,16 +6,19 @@ Additionally, there are prominent differences in the types of references utilize
 
 ## Project Structure and Data Description
 
-This project includes extracted Wikidata data, graph analysis, and fact-checking results. Below is an overview of the key directories and files:
+This project includes analysis of the Wikidata graph regarding countries and person entities related to these countries 
+via citizenship. Below is an overview of the key directories and files:
 
 ### 📂 Directory Structure
 
 - `data/`  
-  Raw data extracted from Wikidata.
+  Raw data extracted from Wikidata and results.
 
 - `data_analysis/`  
   Graph-based analysis of the extracted data.
 
+- `url_analysis/`  
+  Retrieval of URLs from Wikidata references and web scraping.
 ---
 
 ### 📄 Triple Files
@@ -23,17 +26,11 @@ This project includes extracted Wikidata data, graph analysis, and fact-checking
 Each file contains tuples in the format:  
 `[subject, predicate, object, time]`
 
-- `data/triples_values.tsv`  
-  Human-readable values using Wikidata labels.
-
-- `data/triples.tsv`  
-  Machine-readable format using Wikidata QIDs (e.g., `Q42`) and PIDs (e.g., `P31`).
-
 - `data/triples_urls.tsv`  
   Machine-readable format using Wikidata QIDs (e.g., `Q42`) and PIDs (e.g., `P31`), and URL as refernce.
 
 - `data/triples_values_urls.tsv`  
-  Human-readable values using Wikidata labels and URL as refernce.
+  Human-readable values using Wikidata labels and URL as reference.
 
 These files were generated using `sample_triples.py`. Includes outgoing claims for all countries, excluding `"P1549"` (demonym).
 
@@ -42,20 +39,21 @@ Run following command to sample data with human-readable values using Wikidata l
 python sample_triples.py --use_values True --urls True
 ```
 
-
 ---
-### ✅ URL validity
+### 🌎 Extracted Country and Person Entities
 
-URLs provided as reference in Wkidata are checked for validity in `web_scraping.py` and `data/triples_values_urls_verified.csv` generated. The file contains human-readable values using Wikidata labels, URL as refernce and URL web scarping status (e.g., `Valid`, `Redirected`, `Not found`).
+- `data/country_data.json.gz`
+  All country entities in Wikidata, including their outgoing claims.
 
----
+- `data/person_statements`
+  All sampled person entities.
 
-### ⚠️ Notes
+- `data/pid_labels.json` and `data/pid_labels_persons.json`
+  Maps PIDs to human-readable labels.
 
-- If no time information is available, the field contains `"NaN"`.
-- For non-English object values, the `object` field is a dictionary with:
-  ```json
-  {
-    "text": "Beispiel",
-    "language": "de"
-  }
+- `data/person_level_degrees`
+  Degree stats for the analyzed person entities.
+
+- `data/plots`
+  Violin plots visualizing degree stats.
+  
